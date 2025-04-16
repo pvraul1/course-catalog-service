@@ -28,4 +28,12 @@ class CourseService(val courseRespository: CourseRepository) {
         }
     }
 
+    fun retrieveAllCourses(): List<CourseDTO> {
+        return courseRespository.findAll()
+            .map {
+                // Logic to convert Course entity to CourseDTO
+                CourseDTO(it.id, it.name, it.category)
+            }
+    }
+
 }
