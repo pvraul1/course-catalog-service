@@ -53,11 +53,16 @@ class CourseControllerUnitTest {
 
         every { courseServiceMock.addCourse(any()) } returns courseDTO(id = 1)
 
-        webTestClient.post()
+        val response = webTestClient.post()
             .uri("/v1/courses")
             .bodyValue(courseDTO)
             .exchange()
             .expectStatus().isBadRequest
+            .expectBody(String::class.java)
+            .returnResult()
+            .responseBody
+
+        assertEquals("courseDTO.category cannot be blank, courseDTO.name cannot be blank", response)
     }
 
     @Test
