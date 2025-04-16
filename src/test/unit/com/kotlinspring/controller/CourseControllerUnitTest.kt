@@ -45,4 +45,29 @@ class CourseControllerUnitTest {
 
     }
 
+    @Test
+    fun retrieveAllCourses() {
+        every { courseServiceMock.retrieveAllCourses() }.returnsMany(
+            listOf(
+                courseDTO(id = 1),
+                courseDTO(id = 2, name = "Build Reactive Microservices using Spring WebFlux/SpringBoot"),
+                courseDTO(id = 3, name = "Wiremock for Java Developers")
+            )
+        )
+
+        val courses = webTestClient.get()
+            .uri("/v1/courses")
+            .exchange()
+            .expectStatus().isOk
+            .expectBodyList(CourseDTO::class.java)
+            .returnResult()
+            .responseBody
+
+        println("courses: $courses")
+
+        assertTrue {
+            courses!!.size == 3
+        }
+    }
+
 }
