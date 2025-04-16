@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.reactive.server.WebTestClient
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -84,11 +85,7 @@ class CourseControllerIntgTest {
             .returnResult()
             .responseBody
 
-        if (updatedCourseDTO != null) {
-            assertTrue {
-                "Build Restful APIs using SpringBoot and Kotlin1" == updatedCourseDTO.name
-            }
-        }
+        assertEquals("Build Restful APIs using SpringBoot and Kotlin1", updatedCourseDTO!!.name)
     }
 
 }
