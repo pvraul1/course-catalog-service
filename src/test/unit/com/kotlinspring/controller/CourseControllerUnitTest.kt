@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.reactive.server.WebTestClient
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 @WebMvcTest(controllers = [CourseController::class])
@@ -70,4 +71,22 @@ class CourseControllerUnitTest {
         }
     }
 
+    @Test
+    fun updateCourse() {
+        val courseDTO = CourseDTO(null, "Build Restful APIs using SpringBoot and Kotlin1", "Development")
+
+        every { courseServiceMock.updateCourse(any(), any()) } returns courseDTO(id = 100,
+            name = "Build Restful APIs using SpringBoot and Kotlin1")
+
+        val updatedCourseDTO = webTestClient.put()
+            .uri("/v1/courses/{courseId}", 100)
+            .bodyValue(courseDTO)
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(CourseDTO::class.java)
+            .returnResult()
+            .responseBody
+
+        assertEquals("Build Restful APIs using SpringBoot and Kotlin1", updatedCourseDTO!!.name)
+    }
 }
