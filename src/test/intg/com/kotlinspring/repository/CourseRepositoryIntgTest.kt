@@ -35,4 +35,17 @@ class CourseRepositoryIntgTest {
         assert(courses.size == expectedCourseCount)
     }
 
+    @Test
+    fun findCoursesByName() {
+        // Given
+        val courseName = "SpringBoot"
+        val expectedCourseCount = 2
+
+        // When
+        val courses = courseRepository.findCoursesByName(courseName)
+        println("courses: $courses")
+
+        // Then
+        assert(courses.size == expectedCourseCount)
+    }
 }
