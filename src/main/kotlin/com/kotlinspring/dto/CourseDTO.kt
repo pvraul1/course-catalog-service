@@ -1,6 +1,7 @@
 package com.kotlinspring.dto
 
 import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
 
 data class CourseDTO(
     val id: Int?,
@@ -9,5 +10,8 @@ data class CourseDTO(
     val name: String,
 
     @get:NotBlank(message = "courseDTO.category cannot be blank")
-    val category: String
+    val category: String,
+
+    @get:NotNull(message = "courseDTO.instructorId cannot be null")
+    val instructorId: Int? = null
 )
