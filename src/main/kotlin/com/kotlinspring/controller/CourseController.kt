@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
@@ -28,7 +29,8 @@ class CourseController(val courseService: CourseService) {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    fun retrieveAllCourses(): List<CourseDTO> = courseService.retrieveAllCourses()
+    fun retrieveAllCourses(@RequestParam("courseName", required = false) courseName: String?)
+            : List<CourseDTO> = courseService.retrieveAllCourses(courseName)
 
     @PutMapping("/{course_id}")
     @ResponseStatus(HttpStatus.OK)
