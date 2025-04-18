@@ -1,7 +1,7 @@
 package com.kotlinspring.controller
 
 import com.kotlinspring.dto.InstructorDTO
-import com.kotlinspring.repository.InstructorRepository
+import com.kotlinspring.util.PostgresSQLContainerInitializer
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -10,17 +10,13 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.reactive.server.WebTestClient
 
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @AutoConfigureWebTestClient
-class InstructorControllerIntgTest {
+class InstructorControllerIntgTest: PostgresSQLContainerInitializer() {
 
     @Autowired
     lateinit var webTestClient: WebTestClient
-
-    @Autowired
-    lateinit var instructorRepository: InstructorRepository
 
     @Test
     fun addInstructor() {

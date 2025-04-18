@@ -4,6 +4,7 @@ import com.kotlinspring.dto.CourseDTO
 import com.kotlinspring.entity.Course
 import com.kotlinspring.repository.CourseRepository
 import com.kotlinspring.repository.InstructorRepository
+import com.kotlinspring.util.PostgresSQLContainerInitializer
 import com.kotlinspring.util.courseEntityList
 import com.kotlinspring.util.instructorEntity
 import org.junit.jupiter.api.BeforeEach
@@ -12,40 +13,15 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.DynamicPropertyRegistry
-import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.web.util.UriComponentsBuilder
-import org.testcontainers.containers.PostgreSQLContainer
-import org.testcontainers.junit.jupiter.Container
-import org.testcontainers.junit.jupiter.Testcontainers
-import org.testcontainers.utility.DockerImageName
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @AutoConfigureWebTestClient
-@Testcontainers
-class CourseControllerIntgTest {
-
-    companion object {
-
-        @Container
-        val postgresDB = PostgreSQLContainer<Nothing>(DockerImageName.parse("postgres:13-alpine")).apply {
-            withDatabaseName("testdb")
-            withUsername("postgres")
-            withPassword("secret")
-        }
-
-        @JvmStatic
-        @DynamicPropertySource
-        fun properties(registry: DynamicPropertyRegistry) {
-            registry.add("spring.datasource.url", postgresDB::getJdbcUrl)
-            registry.add("spring.datasource.username", postgresDB::getUsername)
-            registry.add("spring.datasource.password", postgresDB::getPassword)
-        }
-    }
+class CourseControllerIntgTest: PostgresSQLContainerInitializer() {
 
     @Autowired
     lateinit var webTestClient: WebTestClient
